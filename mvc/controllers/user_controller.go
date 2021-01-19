@@ -2,7 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
-	"log"
+	"github.com/mnasruul/golang-microservices/mvc/services"
 	"net/http"
 	"strconv"
 )
