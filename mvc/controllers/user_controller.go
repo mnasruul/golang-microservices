@@ -1,5 +1,7 @@
 package controllers
 
-func GetUSer() {
+import "net/http"
+
+func GetUSer(resp http.ResponseWriter, req *http.Request) {
 
 }

@@ -7,5 +7,10 @@ import (
 )
 
 func StartApp() {
-	http.HandleFunc("/users", controllers.GetUser())
+	http.HandleFunc("/users", controllers.GetUser)
+
+	err := http.ListenAndServe(":8081", nil)
+	if err != nil {
+		panic(err)
+	}
 }
