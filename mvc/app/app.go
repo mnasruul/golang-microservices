@@ -7,7 +7,7 @@ import (
 )
 
 func StartApp() {
-	http.HandleFunc("/users", controllers.GetUser)
+	http.HandleFunc("/users", controllers.GetUSer)
 
 	err := http.ListenAndServe(":8081", nil)
 	if err != nil {
