@@ -5,6 +5,7 @@ import (
 	"github.com/mnasruul/golang-microservices/src/api/domain/repositories"
 	"github.com/mnasruul/golang-microservices/src/api/services"
 	"github.com/mnasruul/golang-microservices/src/api/utils/errors"
+	"net/http"
 )
 
 func CreateRepo(c *gin.Context) {
@@ -16,4 +17,9 @@ func CreateRepo(c *gin.Context) {
 	}
 
 	result, err := services.RepositoryService.CreateRepo(request)
+	if err != nil {
+		c.JSON(err.Status(), err)
+		return
+	}
+	c.JSON(http.StatusCreated, result)
 }

@@ -11,7 +11,9 @@ import (
 
 type reposService struct{}
 
-type reposServiceInterface interface{}
+type reposServiceInterface interface {
+	CreateRepo(request repositories.CreateRepoRequest) (*repositories.CreateRepoResponse, errors.ApiError)
+}
 
 var (
 	RepositoryService reposServiceInterface
