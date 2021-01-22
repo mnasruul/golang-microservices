@@ -20,13 +20,13 @@ func getAuthorizationHeader(accessToken string) string {
 	return fmt.Sprintf(headerAuthorizationFormat, accessToken)
 }
 
-func CreateRepo(accesToken string, request github.CreateRepoResponse) (*github.CreateRepoResponse, *github.GithubErrorResponse) {
+func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.CreateRepoResponse, *github.GithubErrorResponse) {
 	// Authorization: token ffabaf2e2b5f9b982b37c787dbfce0ed4ba96e36
 	headers := http.Header{}
-	headers.Set(headerAuthorization, getAuthorizationHeader(accesToken))
+	headers.Set(headerAuthorization, getAuthorizationHeader(accessToken))
 
-	respone, err := resclient.Post(urlCreateRepo, request, headers)
-	fmt.Println(respone)
+	response, err := resclient.Post(urlCreateRepo, request, headers)
+	fmt.Println(response)
 	fmt.Println(err)
 	if err != nil {
 		log.Println(fmt.Sprintf("error where trying to create new repo ingithub: %s", err.Error()))
@@ -35,23 +35,23 @@ func CreateRepo(accesToken string, request github.CreateRepoResponse) (*github.C
 			Message:    err.Error(),
 		}
 	}
-	bytes, err := ioutil.ReadAll(respone.Body)
+	bytes, err := ioutil.ReadAll(response.Body)
 	if err != nil {
 		return nil, &github.GithubErrorResponse{
 			StatusCode: http.StatusInternalServerError,
-			Message:    "invalid respone body",
+			Message:    "invalid response body",
 		}
 	}
-	defer respone.Body.Close()
-	if respone.StatusCode > 299 {
+	defer response.Body.Close()
+	if response.StatusCode > 299 {
 		var errResponse github.GithubErrorResponse
 		if err := json.Unmarshal(bytes, &errResponse); err != nil {
 			return nil, &github.GithubErrorResponse{
 				StatusCode: http.StatusInternalServerError,
-				Message:    "invalid  json respone body",
+				Message:    "invalid  json response body",
 			}
 		}
-		errResponse.StatusCode = respone.StatusCode
+		errResponse.StatusCode = response.StatusCode
 		return nil, &errResponse
 	}
 	var result github.CreateRepoResponse
